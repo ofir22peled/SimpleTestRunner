@@ -1,39 +1,30 @@
-﻿using System.Reflection;
-using TestableCode;
+﻿using System;
+using System.IO;
+using System.Linq;
+using System.Reflection;
 
 namespace TestRunner
 {
     public class TestRunner
     {
-        private int totalTests;
-        private int passedTests;
-        private int failedTests;
-        private List<string> failedTestNames;
+        private readonly TestSummary _summary;
 
-        // Constructor
         public TestRunner()
         {
-            totalTests = 0;
-            passedTests = 0;
-            failedTests = 0;
-            failedTestNames = new List<string>();
+            _summary = new TestSummary();
         }
 
-        public void RunTests()
+        public void RunTests(string assemblyPath)
         {
-            string currentDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            string[] dllFiles = Directory.GetFiles(currentDirectory, "*.dll");
-
-            // Run tests from all dll files in the directory
-            foreach (string dllFile in dllFiles)
+            if (!File.Exists(assemblyPath))
             {
-                RunTestsInAssembly(dllFile);
+                Console.WriteLine($"Assembly file not found: {assemblyPath}");
+                return;
             }
 
-            PrintSummary();
+            RunTestsInAssembly(assemblyPath);
         }
 
-        // Run the tests in a specific assembly file
         private void RunTestsInAssembly(string assemblyFile)
         {
             try
@@ -44,9 +35,8 @@ namespace TestRunner
                 {
                     foreach (MethodInfo method in type.GetMethods())
                     {
-                        if (method.GetCustomAttributes(typeof(TestAttribute), inherit: false).Any())
+                        if (method.GetCustomAttributes(typeof(TestAttribute), false).Any())
                         {
-                            totalTests++;
                             ExecuteTest(method, Activator.CreateInstance(type));
                         }
                     }
@@ -63,43 +53,26 @@ namespace TestRunner
             if (instance == null)
             {
                 Console.WriteLine($"Failed to create an instance of the test class: {method.DeclaringType.Name}");
-                failedTests++;
-                failedTestNames.Add(method.Name);
+                _summary.AddResult(false, method.Name);
                 return;
             }
 
             try
             {
-                method.Invoke(instance, parameters: null);
+                method.Invoke(instance, null);
                 Console.WriteLine($"Test Passed: {method.Name}");
-                passedTests++;
+                _summary.AddResult(true, method.Name);
             }
             catch (TargetInvocationException ex)
             {
                 Console.WriteLine($"Test Failed: {method.Name}. Reason: {ex.InnerException?.Message ?? ex.Message}");
-                failedTests++;
-                failedTestNames.Add(method.Name);
+                _summary.AddResult(false, method.Name);
             }
         }
 
-        private void PrintSummary()
+        public TestSummary GetSummary()
         {
-            Console.WriteLine();
-            Console.WriteLine("----- Test Summary -----");
-            Console.WriteLine($"Total Tests: {totalTests}");
-            Console.WriteLine($"Tests Passed: {passedTests}");
-            Console.WriteLine($"Tests Failed: {failedTests}");
-            Console.WriteLine();
-
-            if (failedTests > 0)
-            {
-                Console.WriteLine("Failed Tests:");
-                foreach (var testName in failedTestNames)
-                {
-                    Console.WriteLine($"- {testName}");
-                }
-                Console.WriteLine();
-            }
+            return _summary;
         }
     }
 }

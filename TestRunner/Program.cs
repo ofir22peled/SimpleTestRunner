@@ -4,9 +4,18 @@
     {
         static void Main(string[] args)
         {
-            TestRunner testRunner = new TestRunner();
-            testRunner.RunTests();
+            if (args.Length == 0)
+            {
+                Console.WriteLine("Please provide the path to the test assembly.");
+                return;
+            }
 
+            string assemblyPath = args[0];
+            TestRunner testRunner = new TestRunner();
+            testRunner.RunTests(assemblyPath);
+
+            TestSummary summary = testRunner.GetSummary();
+            ConsoleReporter.PrintSummary(summary);
         }
     }
 }

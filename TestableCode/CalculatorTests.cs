@@ -1,4 +1,5 @@
-﻿using TestRunner;
+﻿using System;
+using TestRunner; // Reference the TestAttribute from TestRunner
 
 namespace TestableCode
 {

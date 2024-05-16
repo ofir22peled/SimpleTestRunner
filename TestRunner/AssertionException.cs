@@ -1,4 +1,4 @@
-﻿namespace TestableCode
+﻿namespace TestRunner
 {
     public class AssertionException : Exception
     {
