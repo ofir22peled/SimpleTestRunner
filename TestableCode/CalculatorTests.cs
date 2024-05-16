@@ -1,8 +1,10 @@
-﻿using System;
-using TestRunner; // Reference the TestAttribute from TestRunner
+﻿using TestRunner; // Reference the TestAttribute from TestRunner
 
 namespace TestableCode
 {
+    /// <summary>
+    /// Tests for the Calculator class.
+    /// </summary>
     public class CalculatorTests
     {
         [Test]

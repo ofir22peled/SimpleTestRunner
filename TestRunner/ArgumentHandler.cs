@@ -3,6 +3,9 @@ using System.IO;
 
 namespace TestRunner
 {
+    /// <summary>
+    /// Handles command line arguments for the test runner.
+    /// </summary>
     public static class ArgumentHandler
     {
         public static (bool success, IReporter reporter, string assemblyPath) ParseArguments(string[] args)

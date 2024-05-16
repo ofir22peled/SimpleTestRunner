@@ -1,10 +1,10 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using System.Reflection;
+﻿using System.Reflection;
 
 namespace TestRunner
 {
+    /// <summary>
+    /// Runs tests and reports results.
+    /// </summary>
     public class TestRunner
     {
         private readonly TestSummary _summary;
@@ -16,6 +16,9 @@ namespace TestRunner
             _reporter = reporter;
         }
 
+        /// <summary>
+        /// Runs tests in the specified assembly.
+        /// </summary>
         public void RunTests(string assemblyPath)
         {
             if (!File.Exists(assemblyPath))
@@ -72,6 +75,9 @@ namespace TestRunner
             }
         }
 
+        /// <summary>
+        /// Gets the summary of test results.
+        /// </summary>
         public TestSummary GetSummary()
         {
             return _summary;

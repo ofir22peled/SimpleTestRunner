@@ -1,7 +1,8 @@
-﻿using System;
-
-namespace TestRunner
+﻿namespace TestRunner
 {
+    /// <summary>
+    /// Reports test results to the console.
+    /// </summary>
     public class ConsoleReporter : IReporter
     {
         public void TestPassed(string testName)

@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
-
-namespace TestRunner
+﻿namespace TestRunner
 {
+    /// <summary>
+    /// Collects and summarizes the results of test executions.
+    /// </summary>
     public class TestSummary
     {
         public int TotalTests { get; private set; }
@@ -19,6 +20,11 @@ namespace TestRunner
             FailedTestNames = new List<string>();
         }
 
+        /// <summary>
+        /// Adds the result of a test execution.
+        /// </summary>
+        /// <param name="passed">Indicates whether the test passed.</param>
+        /// <param name="testName">The name of the test.</param>
         public void AddResult(bool passed, string testName)
         {
             TotalTests++;

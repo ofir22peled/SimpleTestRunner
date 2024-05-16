@@ -1,8 +1,10 @@
-﻿using System.IO;
-using System.Text;
+﻿using System.Text;
 
 namespace TestRunner
 {
+    /// <summary>
+    /// Reports test results to a file.
+    /// </summary>
     public class FileReporter : IReporter
     {
         private readonly string _filePath;
