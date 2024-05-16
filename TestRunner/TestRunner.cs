@@ -8,17 +8,19 @@ namespace TestRunner
     public class TestRunner
     {
         private readonly TestSummary _summary;
+        private readonly IReporter _reporter;
 
-        public TestRunner()
+        public TestRunner(IReporter reporter)
         {
             _summary = new TestSummary();
+            _reporter = reporter;
         }
 
         public void RunTests(string assemblyPath)
         {
             if (!File.Exists(assemblyPath))
             {
-                Console.WriteLine($"Assembly file not found: {assemblyPath}");
+                _reporter.AssemblyLoadFailed(assemblyPath, "File not found");
                 return;
             }
 
@@ -44,7 +46,7 @@ namespace TestRunner
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Failed to load assembly: {assemblyFile}. Reason: {ex.Message}");
+                _reporter.AssemblyLoadFailed(assemblyFile, ex.Message);
             }
         }
 
@@ -52,7 +54,7 @@ namespace TestRunner
         {
             if (instance == null)
             {
-                Console.WriteLine($"Failed to create an instance of the test class: {method.DeclaringType.Name}");
+                _reporter.InstanceCreationFailed(method.DeclaringType.Name);
                 _summary.AddResult(false, method.Name);
                 return;
             }
@@ -60,12 +62,12 @@ namespace TestRunner
             try
             {
                 method.Invoke(instance, null);
-                Console.WriteLine($"Test Passed: {method.Name}");
+                _reporter.TestPassed(method.Name);
                 _summary.AddResult(true, method.Name);
             }
             catch (TargetInvocationException ex)
             {
-                Console.WriteLine($"Test Failed: {method.Name}. Reason: {ex.InnerException?.Message ?? ex.Message}");
+                _reporter.TestFailed(method.Name, ex.InnerException?.Message ?? ex.Message);
                 _summary.AddResult(false, method.Name);
             }
         }

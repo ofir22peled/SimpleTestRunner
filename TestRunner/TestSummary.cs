@@ -7,6 +7,7 @@ namespace TestRunner
         public int TotalTests { get; private set; }
         public int PassedTests { get; private set; }
         public int FailedTests { get; private set; }
+        public List<string> PassedTestNames { get; private set; }
         public List<string> FailedTestNames { get; private set; }
 
         public TestSummary()
@@ -14,6 +15,7 @@ namespace TestRunner
             TotalTests = 0;
             PassedTests = 0;
             FailedTests = 0;
+            PassedTestNames = new List<string>();
             FailedTestNames = new List<string>();
         }
 
@@ -23,6 +25,7 @@ namespace TestRunner
             if (passed)
             {
                 PassedTests++;
+                PassedTestNames.Add(testName);
             }
             else
             {
