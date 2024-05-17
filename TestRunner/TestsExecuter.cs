@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Diagnostics;
+using System.Reflection;
 using TestRunner.Interfaces;
 
 namespace TestRunner
@@ -18,7 +19,10 @@ namespace TestRunner
         {
             foreach (MethodInfo test in methodInfos)
             {
-                ExecuteTest(test, Activator.CreateInstance(test.DeclaringType));
+                // Create an instance of the type containing the test method
+                object instance = Activator.CreateInstance(test.DeclaringType);
+
+                ExecuteTest(test, instance);
             }
         }
 
@@ -27,21 +31,34 @@ namespace TestRunner
             if (instance == null)
             {
                 _reporter.InstanceCreationFailed(method.DeclaringType.Name);
-                _summary.AddFailureResult(method.Name);
+                _summary.AddFailureResult(method.Name, 0);
+                return;
             }
-            else
+
+            Stopwatch stopwatch = new Stopwatch();
+            try
             {
-                try
-                {
-                    method.Invoke(instance, parameters: null);
-                    _reporter.TestPassed(method.Name);
-                    _summary.AddSuccessResult(method.Name);
-                }
-                catch (TargetInvocationException ex)
-                {
-                    _reporter.TestFailed(method.Name, ex.InnerException?.Message ?? ex.Message);
-                    _summary.AddFailureResult(method.Name);
-                }
+                stopwatch.Start();
+                // Invoke the test method
+                method.Invoke(instance, null);
+                stopwatch.Stop();
+
+                _reporter.TestPassed(method.Name);
+                _summary.AddSuccessResult(method.Name, stopwatch.Elapsed.TotalMilliseconds);
+            }
+            catch (TargetInvocationException ex)
+            {
+                stopwatch.Stop();
+                // Catch exceptions thrown by the test method
+                _reporter.TestFailed(method.Name, ex.InnerException?.Message ?? ex.Message);
+                _summary.AddFailureResult(method.Name, stopwatch.Elapsed.TotalMilliseconds);
+            }
+            catch (Exception ex)
+            {
+                stopwatch.Stop();
+                // Catch any other exceptions that may occur
+                _reporter.TestFailed(method.Name, ex.Message);
+                _summary.AddFailureResult(method.Name, stopwatch.Elapsed.TotalMilliseconds);
             }
         }
     }

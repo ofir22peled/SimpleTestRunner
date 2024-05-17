@@ -7,8 +7,10 @@
         int FailedTests { get; }
         int PassedTests { get; }
         int TotalTests { get; }
+        double AverageTestDuration { get; }
+        TimeSpan TotalTestDuration { get; }
 
-        void AddFailureResult(string testName);
-        void AddSuccessResult(string testName);
+        void AddFailureResult(string testName, double duration);
+        void AddSuccessResult(string testName, double duration);
     }
 }

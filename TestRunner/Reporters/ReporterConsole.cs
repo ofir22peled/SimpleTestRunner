@@ -34,6 +34,8 @@ namespace TestRunner.Reporters
             Console.WriteLine($"Total Tests: {summary.TotalTests}");
             Console.WriteLine($"Tests Passed: {summary.PassedTests}");
             Console.WriteLine($"Tests Failed: {summary.FailedTests}");
+            Console.WriteLine($"Average Test Duration: {summary.AverageTestDuration} ms");
+            Console.WriteLine($"Total Test Duration: {summary.TotalTestDuration}");
             Console.WriteLine();
 
             if (summary.PassedTests > 0)
