@@ -1,4 +1,6 @@
-﻿using TestRunner.Interfaces;
+﻿using TestRunner.Arguments;
+using TestRunner.Interfaces;
+using TestRunner.Tests;
 
 namespace TestRunner
 {

@@ -1,6 +1,6 @@
 ﻿using TestRunner.Interfaces;
 
-namespace TestRunner
+namespace TestRunner.Tests
 {
     /// <summary>
     /// Collects and summarizes the results of test executions.

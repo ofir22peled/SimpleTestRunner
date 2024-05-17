@@ -1,4 +1,6 @@
-﻿namespace TestRunner.Interfaces
+﻿using TestRunner.Arguments;
+
+namespace TestRunner.Interfaces
 {
     public interface IArgumentHandler
     {

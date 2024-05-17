@@ -1,12 +1,13 @@
-﻿using TestRunner.Assertions;
+﻿using TestableCode.Interfaces;
+using TestRunner.Assertions;
 using TestRunner.Attributes;
 
-namespace TestableCode
+namespace TestableCode.Calculator
 {
     /// <summary>
     /// Tests for the Calculator class.
     /// </summary>
-    public class CalculatorTests
+    public class CalculatorTests : ICalculatorTests
     {
         [Test]
         public void TestAdd()

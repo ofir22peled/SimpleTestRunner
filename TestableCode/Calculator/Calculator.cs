@@ -1,9 +1,11 @@
-﻿namespace TestableCode
+﻿using TestableCode.Interfaces;
+
+namespace TestableCode.Calculator
 {
     /// <summary>
     /// Simple calculator class for demonstration purposes.
     /// </summary>
-    public class Calculator
+    public class Calculator : ICalculator
     {
         public int Add(int a, int b)
         {

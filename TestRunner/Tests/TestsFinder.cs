@@ -2,7 +2,7 @@
 using TestRunner.Attributes;
 using TestRunner.Interfaces;
 
-namespace TestRunner
+namespace TestRunner.Tests
 {
     public class TestsFinder : ITestsFinder
     {

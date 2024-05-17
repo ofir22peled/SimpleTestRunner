@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using TestRunner.Interfaces;
 
-namespace TestRunner
+namespace TestRunner.Tests
 {
     /// <summary>
     /// Runs tests and reports results.
