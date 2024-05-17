@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "TestRunner": {
+      "commandName": "Project",
+      "commandLineArgs": "\"C:\\Users\\ofir2\\source\\repos\\SimpleTestRunner\\TestableCode\\bin\\Debug\\net6.0\\TestableCode.dll\" console"
+    }
+  }
+}

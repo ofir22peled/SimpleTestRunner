@@ -1,4 +1,4 @@
-﻿namespace TestRunner
+﻿namespace TestRunner.Assertions
 {
     /// <summary>
     /// Provides static methods for making assertions in tests.

@@ -1,21 +1,22 @@
-﻿namespace TestRunner
+﻿using TestRunner.Interfaces;
+
+namespace TestRunner
 {
     class Program
     {
         static void Main(string[] args)
         {
-            var (success, reporter, assemblyPath) = ArgumentHandler.ParseArguments(args);
+            IArgumentHandler argumentHandler = new ArgumentHandler();
+            RunArguments runArgument = argumentHandler.ParseArguments(args);
 
-            if (!success)
+            if (runArgument.Success)
             {
-                return;
+                IReporter reporter = runArgument.Reporter;
+                TestsRunner testRunner = new TestsRunner(reporter, new TestsSummary(), new TestsFinder(reporter));
+                ITestsSummary summary = testRunner.RunTests(runArgument.AssemblyPath);
+
+                runArgument.Reporter.PrintSummary(summary);
             }
-
-            TestRunner testRunner = new TestRunner(reporter);
-            testRunner.RunTests(assemblyPath);
-
-            TestSummary summary = testRunner.GetSummary();
-            reporter.PrintSummary(summary);
         }
     }
 }

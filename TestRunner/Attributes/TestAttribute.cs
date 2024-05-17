@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TestRunner
+namespace TestRunner.Attributes
 {
     /// <summary>
     /// Attribute to mark methods as test methods.

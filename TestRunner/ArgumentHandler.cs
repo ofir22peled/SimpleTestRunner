@@ -1,35 +1,30 @@
 ﻿using System;
 using System.IO;
+using TestRunner.Interfaces;
 
 namespace TestRunner
 {
     /// <summary>
     /// Handles command line arguments for the test runner.
     /// </summary>
-    public static class ArgumentHandler
+    public class ArgumentHandler : IArgumentHandler
     {
-        public static (bool success, IReporter reporter, string assemblyPath) ParseArguments(string[] args)
+        public RunArguments ParseArguments(string[] args)
         {
-            IReporter tempReporter;
-
             if (args.Length < 2)
             {
-                tempReporter = new ConsoleReporter();
-                tempReporter.PrintMessage("Usage: TestRunner <path_to_test_assembly> <output_type> [<output_path>]");
-                tempReporter.PrintMessage("output_type: console or file");
-                tempReporter.PrintMessage("If output_type is file, provide <output_path> as the third argument.");
-                return (false, tempReporter, null);
+                return GetMissingParametersResult();
             }
 
             string assemblyPath = args[0];
-            string outputType = args[1];
 
             if (!File.Exists(assemblyPath))
             {
-                tempReporter = new ConsoleReporter();
-                tempReporter.PrintError($"Assembly file not found: {assemblyPath}");
-                return (false, tempReporter, null);
+                return GetInvalidFilePathResult(assemblyPath);
             }
+            
+            IReporter tempReporter;
+            string outputType = args[1];
 
             if (outputType.Equals("console", StringComparison.OrdinalIgnoreCase))
             {
@@ -41,8 +36,10 @@ namespace TestRunner
                 {
                     tempReporter = new ConsoleReporter();
                     tempReporter.PrintError("Please provide the output file path.");
-                    return (false, tempReporter, null);
+
+                    return new RunArguments(success: false, tempReporter, assemblyPath: null);
                 }
+
                 string outputPath = args[2];
                 tempReporter = new FileReporter(outputPath);
             }
@@ -50,10 +47,29 @@ namespace TestRunner
             {
                 tempReporter = new ConsoleReporter();
                 tempReporter.PrintError("Invalid output type. Use 'console' or 'file'.");
-                return (false, tempReporter, null);
+
+                return new RunArguments(success: false, tempReporter, assemblyPath: null);
             }
 
-            return (true, tempReporter, assemblyPath);
+            return new RunArguments(success: true, tempReporter, assemblyPath);
+        }
+
+        private static RunArguments GetInvalidFilePathResult(string assemblyPath)
+        {
+            IReporter tempReporter = new ConsoleReporter();
+            tempReporter.PrintError($"Assembly file not found: {assemblyPath}");
+
+            return new RunArguments(success: false, tempReporter, assemblyPath: null);
+        }
+
+        private RunArguments GetMissingParametersResult()
+        {
+            IReporter tempReporter = new ConsoleReporter();
+            tempReporter.PrintMessage("Usage: TestsRunner <path_to_test_assembly> <output_type> [<output_path>]");
+            tempReporter.PrintMessage("output_type: console or file");
+            tempReporter.PrintMessage("If output_type is file, provide <output_path> as the third argument.");
+
+            return new RunArguments(success: false, tempReporter, assemblyPath: null);
         }
     }
 }

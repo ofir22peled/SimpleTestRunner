@@ -1,4 +1,4 @@
-﻿namespace TestRunner
+﻿namespace TestRunner.Assertions
 {
     /// <summary>
     /// Custom exception for assertion failures.

@@ -1,4 +1,4 @@
-﻿namespace TestRunner
+﻿namespace TestRunner.Interfaces
 {
     /// <summary>
     /// Defines methods for reporting test results.
@@ -35,7 +35,7 @@
         /// Prints a summary of the test results.
         /// </summary>
         /// <param name="summary">The test summary to print.</param>
-        void PrintSummary(TestSummary summary);
+        void PrintSummary(ITestsSummary summary);
 
         /// <summary>
         /// Prints a general message.

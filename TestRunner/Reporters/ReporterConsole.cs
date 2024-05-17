@@ -1,9 +1,11 @@
-﻿namespace TestRunner
+﻿using TestRunner.Interfaces;
+
+namespace TestRunner.Reporters
 {
     /// <summary>
     /// Reports test results to the console.
     /// </summary>
-    public class ConsoleReporter : IReporter
+    public class ReporterConsole : IReporter
     {
         public void TestPassed(string testName)
         {
@@ -25,7 +27,7 @@
             Console.WriteLine($"Failed to create an instance of the test class: {className}");
         }
 
-        public void PrintSummary(TestSummary summary)
+        public void PrintSummary(ITestsSummary summary)
         {
             Console.WriteLine();
             Console.WriteLine("----- Test Summary -----");

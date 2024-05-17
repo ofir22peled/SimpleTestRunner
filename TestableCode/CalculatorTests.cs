@@ -1,4 +1,4 @@
-﻿using TestRunner;
+﻿using TestRunner.Assertions;
 
 namespace TestableCode
 {

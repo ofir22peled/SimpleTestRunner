@@ -1,16 +1,17 @@
 ﻿using System.Text;
+using TestRunner.Interfaces;
 
-namespace TestRunner
+namespace TestRunner.Reporters
 {
     /// <summary>
     /// Reports test results to a file.
     /// </summary>
-    public class FileReporter : IReporter
+    public class ReporterFile : IReporter
     {
         private readonly string _filePath;
         private readonly StringBuilder _content;
 
-        public FileReporter(string filePath)
+        public ReporterFile(string filePath)
         {
             _filePath = filePath;
             _content = new StringBuilder();
@@ -36,7 +37,7 @@ namespace TestRunner
             _content.AppendLine($"Failed to create an instance of the test class: {className}");
         }
 
-        public void PrintSummary(TestSummary summary)
+        public void PrintSummary(ITestsSummary summary)
         {
             _content.AppendLine();
             _content.AppendLine("----- Test Summary -----");
