@@ -1,6 +1,5 @@
-﻿using System;
-using System.IO;
-using TestRunner.Interfaces;
+﻿using TestRunner.Interfaces;
+using TestRunner.Reporters;
 
 namespace TestRunner
 {
@@ -28,24 +27,24 @@ namespace TestRunner
 
             if (outputType.Equals("console", StringComparison.OrdinalIgnoreCase))
             {
-                tempReporter = new ConsoleReporter();
+                tempReporter = new ReporterConsole();
             }
             else if (outputType.Equals("file", StringComparison.OrdinalIgnoreCase))
             {
                 if (args.Length < 3)
                 {
-                    tempReporter = new ConsoleReporter();
+                    tempReporter = new ReporterConsole();
                     tempReporter.PrintError("Please provide the output file path.");
 
                     return new RunArguments(success: false, tempReporter, assemblyPath: null);
                 }
 
                 string outputPath = args[2];
-                tempReporter = new FileReporter(outputPath);
+                tempReporter = new ReporterFile(outputPath);
             }
             else
             {
-                tempReporter = new ConsoleReporter();
+                tempReporter = new ReporterConsole();
                 tempReporter.PrintError("Invalid output type. Use 'console' or 'file'.");
 
                 return new RunArguments(success: false, tempReporter, assemblyPath: null);
@@ -56,7 +55,7 @@ namespace TestRunner
 
         private static RunArguments GetInvalidFilePathResult(string assemblyPath)
         {
-            IReporter tempReporter = new ConsoleReporter();
+            IReporter tempReporter = new ReporterConsole();
             tempReporter.PrintError($"Assembly file not found: {assemblyPath}");
 
             return new RunArguments(success: false, tempReporter, assemblyPath: null);
@@ -64,7 +63,7 @@ namespace TestRunner
 
         private RunArguments GetMissingParametersResult()
         {
-            IReporter tempReporter = new ConsoleReporter();
+            IReporter tempReporter = new ReporterConsole();
             tempReporter.PrintMessage("Usage: TestsRunner <path_to_test_assembly> <output_type> [<output_path>]");
             tempReporter.PrintMessage("output_type: console or file");
             tempReporter.PrintMessage("If output_type is file, provide <output_path> as the third argument.");

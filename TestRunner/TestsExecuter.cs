@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Reflection;
 using TestRunner.Interfaces;
 
 namespace TestRunner
@@ -12,11 +7,9 @@ namespace TestRunner
     {
         private readonly ITestsSummary _summary;
         private readonly IReporter _reporter;
-        private readonly IReadOnlyCollection<MethodInfo> _methodInfos;
 
-        public TestsExecuter(IReadOnlyCollection<MethodInfo> methodInfos, IReporter reporter, ITestsSummary summary)
+        public TestsExecuter(IReporter reporter, ITestsSummary summary)
         {
-            _methodInfos = methodInfos;
             _summary = summary;
             _reporter = reporter;
         }

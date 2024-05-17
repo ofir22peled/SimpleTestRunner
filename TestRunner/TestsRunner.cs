@@ -44,7 +44,7 @@ namespace TestRunner
             {
                 IReadOnlyCollection<MethodInfo> methodInfos = _testsFinder.FindTests(assemblyFilePath);
 
-                ExecuteTests(methodInfos);
+                _testsExecuter.ExecuteTests(methodInfos);
             }
             catch (Exception ex)
             {

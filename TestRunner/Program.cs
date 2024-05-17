@@ -12,8 +12,12 @@ namespace TestRunner
             if (runArgument.Success)
             {
                 IReporter reporter = runArgument.Reporter;
-                TestsRunner testRunner = new TestsRunner(reporter, new TestsSummary(), new TestsFinder(reporter));
-                ITestsSummary summary = testRunner.RunTests(runArgument.AssemblyPath);
+                ITestsSummary summary = new TestsSummary();
+                ITestsFinder testsFinder = new TestsFinder(reporter);
+                ITestsExecuter testsExecuter = new TestsExecuter(reporter, summary);
+
+                TestsRunner testRunner = new TestsRunner(reporter, summary, testsFinder, testsExecuter);
+                summary = testRunner.RunTests(runArgument.AssemblyPath);
 
                 runArgument.Reporter.PrintSummary(summary);
             }
