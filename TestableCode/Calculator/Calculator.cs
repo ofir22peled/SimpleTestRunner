@@ -1,35 +1,55 @@
-﻿using TestableCode.Interfaces;
+﻿using System;
+using System.Collections.Generic;
+using TestableCode.Interfaces;
 
 namespace TestableCode.Calculator
 {
     /// <summary>
-    /// Simple calculator class for demonstration purposes.
+    /// Calculator class that dynamically registers and executes operations.
     /// </summary>
-    public class Calculator : ICalculator
+    public class Calculator
     {
-        public int Add(int a, int b)
+        private readonly Dictionary<string, ICalculatorOperation> _operations = new();
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Calculator"/> class
+        /// and registers the default operations.
+        /// </summary>
+        public Calculator()
         {
-            return a + b;
+            RegisterOperation(new Addition());
+            RegisterOperation(new Subtraction());
+            RegisterOperation(new Division());
+            RegisterOperation(new Multiplication());
         }
 
-        public int Subtract(int a, int b)
+        /// <summary>
+        /// Registers a new operation.
+        /// </summary>
+        /// <param name="operation">The operation to register.</param>
+        /// <exception cref="ArgumentNullException">Thrown when the operation is null.</exception>
+        public void RegisterOperation(ICalculatorOperation operation)
         {
-            return a - b;
+            if (operation == null) throw new ArgumentNullException(nameof(operation));
+            _operations[operation.OperationName] = operation;
         }
 
-        public int Divide(int a, int b)
+        /// <summary>
+        /// Executes the specified operation with the given operands.
+        /// </summary>
+        /// <param name="operationName">The name of the operation to execute.</param>
+        /// <param name="a">The first operand.</param>
+        /// <param name="b">The second operand.</param>
+        /// <returns>The result of the operation.</returns>
+        /// <exception cref="InvalidOperationException">Thrown when the operation is not found.</exception>
+        public int ExecuteOperation(string operationName, int a, int b)
         {
-            if (b == 0)
+            if (!_operations.ContainsKey(operationName))
             {
-                throw new DivideByZeroException("Dividing by zero is a world crime.");
+                throw new InvalidOperationException($"Operation '{operationName}' not found.");
             }
 
-            return a / b;
-        }
-
-        public int Mult(int a, int b)
-        {
-            return a * b;
+            return _operations[operationName].Execute(a, b);
         }
     }
 }

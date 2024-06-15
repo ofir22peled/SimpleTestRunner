@@ -12,17 +12,20 @@ namespace TestableCode.Calculator
         [Test]
         public void TestAdd()
         {
+            //Arrange
             Calculator calculator = new Calculator();
-            int result = calculator.Add(3, 5);
-            Assert.AreEqual(8, result, "Add method test failed.");
+            //Act
+            int result = calculator.Addition(3, 5);
+            //Assert
+            Assert.AreEqual(8, result, "Addition method test failed.");
         }
 
         [Test]
         public void TestAddWithNegativeNumbers()
         {
             Calculator calculator = new Calculator();
-            int result = calculator.Add(-3, -5);
-            Assert.AreEqual(-8, result, "Add method with negative numbers test failed.");
+            int result = calculator.Addition(-3, -5);
+            Assert.AreEqual(-8, result, "Addition method with negative numbers test failed.");
         }
 
         [Test]
@@ -76,8 +79,8 @@ namespace TestableCode.Calculator
         public void TestAddWithZero()
         {
             Calculator calculator = new Calculator();
-            int result = calculator.Add(0, 5);
-            Assert.AreEqual(5, result, "Add method with zero test failed.");
+            int result = calculator.Addition(0, 5);
+            Assert.AreEqual(5, result, "Addition method with zero test failed.");
         }
 
         [Test]
