@@ -1,7 +1,4 @@
-﻿
-    }
-}
-using TestableCode.Interfaces;
+﻿using TestableCode.Interfaces;
 
 namespace TestableCode.Calculator
 {
